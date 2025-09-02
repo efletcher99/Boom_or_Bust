@@ -8,7 +8,14 @@ app.use(cors());
 
 const server = http.createServer(app);
 
-const io = new Server(server, { cors: { origin: "*" } });
+//const io = new Server(server, { cors: { origin: "*" } });
+//use after render is setup
+const io = new Server(server, {
+  cors: {
+    origin: [process.env.EXPO_PUBLIC_SERVER_URL], // your React app URL
+    methods: ["GET", "POST"]
+  }
+});
 
 const games = {}; // store players by gameId
 

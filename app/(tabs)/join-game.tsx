@@ -1,13 +1,15 @@
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
-import { getSocket } from "../../services/socket-service";
+import { getSocket, initSocket } from "../../services/socket-service";
 
 export default function JoinGameScreen() {
   const router = useRouter();
   const [nickname, setNickname] = useState("");
   const [gameId, setGameId] = useState("");
-  const socket = getSocket();
+  
+  // Initialize socket if it hasn't been initialized yet
+  const socket = getSocket() || initSocket();
 
   const isFormValid = nickname.trim() && gameId.trim();
 
@@ -16,18 +18,18 @@ export default function JoinGameScreen() {
   };
 
   useEffect(() => {
-  if (!socket) return; // wait for socket to be ready
+    if (!socket) return; // wait for socket to be ready
 
-  const handleJoinSuccess = () => {
-    router.push(`/waiting-room?gameId=${gameId}&nickname=${nickname}`);
-  };
+    const handleJoinSuccess = () => {
+      router.push(`/waiting-room?gameId=${gameId}&nickname=${nickname}`);
+    };
 
-  socket.on("joinSuccess", handleJoinSuccess);
+    socket.on("joinSuccess", handleJoinSuccess);
 
-  return () => {
-    socket.off("joinSuccess", handleJoinSuccess);
-  };
-}, [gameId, socket]);
+    return () => {
+      socket.off("joinSuccess", handleJoinSuccess);
+    };
+  }, [gameId, socket]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -38,14 +40,26 @@ export default function JoinGameScreen() {
       >
 
         <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-                <Text style={styles.backButtonText}>Back</Text>
-              </TouchableOpacity>
+          <Text style={styles.backButtonText}>Back</Text>
+        </TouchableOpacity>
 
         <View style={styles.form}>
           <Text style={styles.label}>Nickname</Text>
-          <TextInput style={styles.input} value={nickname} onChangeText={setNickname} autoCapitalize="none" autoCorrect={false} />
+          <TextInput 
+            style={styles.input} 
+            value={nickname} 
+            onChangeText={setNickname} 
+            autoCapitalize="none" 
+            autoCorrect={false} 
+          />
           <Text style={styles.label}>Game ID</Text>
-          <TextInput style={styles.input} value={gameId} onChangeText={setGameId} autoCapitalize="none" autoCorrect={false} />
+          <TextInput 
+            style={styles.input} 
+            value={gameId} 
+            onChangeText={setGameId} 
+            autoCapitalize="none" 
+            autoCorrect={false} 
+          />
         </View>
 
         <View style={styles.buttonContainer}>
@@ -125,7 +139,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 20, 
     justifyContent: "flex-end",
-    bottom: 120, //lower once the nav bar is gone
+    bottom: 120,
     alignSelf: "center", 
   },
   joinButton: { 
