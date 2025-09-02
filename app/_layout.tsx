@@ -9,7 +9,8 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    'Handlee-Regular': require('../assets/fonts/Handlee-Regular.ttf'),
+    '8-bit': require('../assets/fonts/8-bit.ttf'),
   });
 
   if (!loaded) {
