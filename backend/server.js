@@ -14,7 +14,7 @@ const io = new Server(server, {
 });
 
 // Keep track of players per game
-const games: Record<string, { id: string; nickname: string }[]> = {};
+const games = {};
 
 io.on("connection", (socket) => {
   console.log("New client connected:", socket.id);
