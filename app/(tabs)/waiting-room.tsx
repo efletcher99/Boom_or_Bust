@@ -46,7 +46,15 @@ export default function WaitingRoom({ gameId }: { gameId: string }) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+      <TouchableOpacity style={styles.backButton} 
+        onPress={() => {
+          const socket = getSocket();
+          if (socket && gameId) {
+            socket.emit("leaveGame", { gameId });
+          }
+          router.back();
+        }}
+        >
         <Text style={styles.backButtonText}>Back</Text>
       </TouchableOpacity>
 

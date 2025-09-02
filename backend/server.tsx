@@ -49,6 +49,14 @@ io.on("connection", (socket) => {
     io.to(gameId).emit("gameStarted");
   });
 
+  // Player leaves the game
+  socket.on("leaveGame", ({ gameId }) => {
+  if (games[gameId]) {
+    games[gameId] = games[gameId].filter(p => p.id !== socket.id);
+    io.to(gameId).emit("playersUpdate", games[gameId]);
+  }
+});
+
   // Handle disconnections
   socket.on("disconnect", () => {
     console.log("Client disconnected:", socket.id);
