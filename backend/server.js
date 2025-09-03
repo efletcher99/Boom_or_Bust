@@ -22,8 +22,8 @@ io.on("connection", (socket) => {
   // Host creates a game
   socket.on("createGame", ({ gameId }) => {
     console.log(`Game created: ${gameId}`);
-    games[gameId] = [];            // initialize empty player list
-    socket.join(gameId);           // join host to the room
+    games[gameId] = [];            
+    socket.join(gameId);           
   });
 
   // Player joins a game
@@ -51,10 +51,12 @@ io.on("connection", (socket) => {
 
   // Player leaves the game
   socket.on("leaveGame", ({ gameId }) => {
+    console.log(`Player ${socket.id} leaving game ${gameId}`);
   if (games[gameId]) {
     games[gameId] = games[gameId].filter(p => p.id !== socket.id);
     io.to(gameId).emit("playersUpdate", games[gameId]);
   }
+  
 });
 
   // Handle disconnections

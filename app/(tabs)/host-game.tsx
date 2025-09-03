@@ -16,7 +16,7 @@ export default function HostGameScreen() {
     setGameId(id);
 
     const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || "http://localhost:3001";
-    const socket = initSocket(SERVER_URL);
+    const socket = initSocket(SERVER_URL); //pass server url when testing on server
 
     socket.emit("createGame", { gameId: id });
 

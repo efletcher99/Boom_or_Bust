@@ -5,10 +5,10 @@ let socket: ReturnType<typeof io> | null = null;
 let socketUrl: string | null = null;
 
 // Initialize the socket with optional host IP
-export const initSocket = (url: string) => {
-  socketUrl = url;
-  socket = io(url);
-  console.log("Socket initialized at:", url);
+export const initSocket = (url?: string) => {
+  socketUrl = url || "http://192.168.40.53:3001";
+  socket = io(socketUrl);
+  console.log("Socket initialized at:", socketUrl);
   return socket;
 };
 

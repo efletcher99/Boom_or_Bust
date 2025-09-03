@@ -8,8 +8,9 @@ export default function JoinGameScreen() {
   const [nickname, setNickname] = useState("");
   const [gameId, setGameId] = useState("");
   
-  // Initialize socket if it hasn't been initialized yet
-  const socket = getSocket() || initSocket();
+  //// Initialize socket if it hasn't been initialized yet
+  const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL || "http://localhost:3001";
+  const socket = getSocket() || initSocket(SERVER_URL); //pass server url when testing on server
 
   const isFormValid = nickname.trim() && gameId.trim();
 
@@ -18,7 +19,7 @@ export default function JoinGameScreen() {
   };
 
   useEffect(() => {
-    if (!socket) return; // wait for socket to be ready
+    if (!socket) return; 
 
     const handleJoinSuccess = () => {
       router.push(`/waiting-room?gameId=${gameId}&nickname=${nickname}`);
